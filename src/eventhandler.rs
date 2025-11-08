@@ -101,7 +101,7 @@ fn process_events(me: &mut dyn EventHandler, he: HELEMENT, evtg: UINT, params: L
 		&& evtg != EVENT_GROUPS::HANDLE_INITIALIZATION
 		&& evtg != EVENT_GROUPS::HANDLE_SOM
 	{
-		eprintln!("[sciter] warning! null element for {:04X}", evtg as u32);
+		eprintln!("[sciter] warning! null element for {:04X}", evtg.0 as u32);
 	}
 
 	let result = match evtg {
@@ -298,7 +298,7 @@ fn process_events(me: &mut dyn EventHandler, he: HELEMENT, evtg: UINT, params: L
 
 		// unknown `EVENT_GROUPS` notification
 		_ => {
-			eprintln!("[sciter] warning! unknown event group {:04X}", evtg as u32);
+			eprintln!("[sciter] warning! unknown event group {:04X}", evtg.0 as u32);
 			false
 		},
 	};

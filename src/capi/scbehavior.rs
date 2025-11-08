@@ -157,56 +157,92 @@ pub enum DRAW_EVENTS {
 }
 
 
-/// Event groups for subscription.
-#[repr(C)]
-#[derive(Copy, Clone)]
-#[derive(Debug, PartialOrd, PartialEq)]
-pub enum EVENT_GROUPS
-{ /// Attached/detached.
-	HANDLE_INITIALIZATION = 0x0000,
-	/// Mouse events.
-	HANDLE_MOUSE = 0x0001,
-	/// Key events.
-	HANDLE_KEY = 0x0002,
-	/// Focus events, if this flag is set it also means that element it attached to is focusable.
-	HANDLE_FOCUS = 0x0004,
-	/// Scroll events.
-	HANDLE_SCROLL = 0x0008,
-	/// Timer event.
-	HANDLE_TIMER = 0x0010,
-	/// Size changed event.
-	HANDLE_SIZE = 0x0020,
-	/// Drawing request (event).
-	HANDLE_DRAW = 0x0040,
-	/// Requested data has been delivered.
-	HANDLE_DATA_ARRIVED = 0x080,
-
-	/// Logical, synthetic events:
-  /// `BUTTON_CLICK`, `HYPERLINK_CLICK`, etc.,
-	/// a.k.a. notifications from intrinsic behaviors.
-	HANDLE_BEHAVIOR_EVENT        = 0x0100,
-	 /// Behavior specific methods.
-	HANDLE_METHOD_CALL           = 0x0200,
-	/// Behavior specific methods.
-	HANDLE_SCRIPTING_METHOD_CALL = 0x0400,
-
-	/// Behavior specific methods using direct `tiscript::value`'s.
-	#[deprecated(since="Sciter 4.4.3.24", note="TIScript native API is gone, use SOM instead.")]
-	HANDLE_TISCRIPT_METHOD_CALL  = 0x0800,
-
-	/// System drag-n-drop.
-	HANDLE_EXCHANGE              = 0x1000,
-	/// Touch input events.
-	HANDLE_GESTURE               = 0x2000,
-	/// SOM passport and asset requests.
-	HANDLE_SOM                   = 0x8000,
-
-	/// All of them.
-	HANDLE_ALL                   = 0xFFFF,
-
-	/// Special value for getting subscription flags.
-	SUBSCRIPTIONS_REQUEST        = -1,
+impl EVENT_GROUPS {
+    pub const HANDLE_INITIALIZATION: EVENT_GROUPS = EVENT_GROUPS(0);
 }
+impl EVENT_GROUPS {
+    pub const HANDLE_MOUSE: EVENT_GROUPS = EVENT_GROUPS(1);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_KEY: EVENT_GROUPS = EVENT_GROUPS(2);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_FOCUS: EVENT_GROUPS = EVENT_GROUPS(4);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_SCROLL: EVENT_GROUPS = EVENT_GROUPS(8);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_TIMER: EVENT_GROUPS = EVENT_GROUPS(16);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_SIZE: EVENT_GROUPS = EVENT_GROUPS(32);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_DRAW: EVENT_GROUPS = EVENT_GROUPS(64);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_DATA_ARRIVED: EVENT_GROUPS = EVENT_GROUPS(128);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_BEHAVIOR_EVENT: EVENT_GROUPS = EVENT_GROUPS(256);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_METHOD_CALL: EVENT_GROUPS = EVENT_GROUPS(512);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_SCRIPTING_METHOD_CALL: EVENT_GROUPS = EVENT_GROUPS(1024);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_STYLE_CHANGE: EVENT_GROUPS = EVENT_GROUPS(2048);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_EXCHANGE: EVENT_GROUPS = EVENT_GROUPS(4096);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_GESTURE: EVENT_GROUPS = EVENT_GROUPS(8192);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_ATTRIBUTE_CHANGE: EVENT_GROUPS = EVENT_GROUPS(16384);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_SOM: EVENT_GROUPS = EVENT_GROUPS(32768);
+}
+impl EVENT_GROUPS {
+    pub const HANDLE_ALL: EVENT_GROUPS = EVENT_GROUPS(65535);
+}
+impl EVENT_GROUPS {
+    pub const SUBSCRIPTIONS_REQUEST: EVENT_GROUPS = EVENT_GROUPS(-1);
+}
+impl ::std::ops::BitOr<EVENT_GROUPS> for EVENT_GROUPS {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        EVENT_GROUPS(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for EVENT_GROUPS {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: EVENT_GROUPS) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<EVENT_GROUPS> for EVENT_GROUPS {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        EVENT_GROUPS(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for EVENT_GROUPS {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: EVENT_GROUPS) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct EVENT_GROUPS(pub ::std::os::raw::c_int);
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -537,13 +573,4 @@ pub enum BEHAVIOR_EVENTS
 	/// To send event notifications with  these codes use `SciterSend`/`PostEvent` API.
 	FIRST_APPLICATION_EVENT_CODE = 0x100,
 
-}
-
-
-impl ::std::ops::BitOr for EVENT_GROUPS {
-  type Output = EVENT_GROUPS;
-  fn bitor(self, rhs: Self::Output) -> Self::Output {
-    let rn = (self as UINT) | (rhs as UINT);
-    unsafe { ::std::mem::transmute(rn) }
-  }
 }
