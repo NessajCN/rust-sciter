@@ -173,10 +173,10 @@ fn process_events(me: &mut dyn EventHandler, he: HELEMENT, evtg: UINT, params: L
 
 				_ => {
 					let reason: CLICK_REASON = match nm.reason {
-						0 => CLICK_REASON::BY_MOUSE_CLICK,
-						1 => CLICK_REASON::BY_KEY_CLICK,
-						2 => CLICK_REASON::SYNTHESIZED,
-						3 => CLICK_REASON::BY_MOUSE_ON_ICON,
+						1 => CLICK_REASON::BY_MOUSE_CLICK,
+						2 => CLICK_REASON::BY_KEY_CLICK,
+						3 => CLICK_REASON::SYNTHESIZED,
+						4 => CLICK_REASON::BY_MOUSE_ON_ICON,
 						_ => {
 							eprintln!("[sciter] warning! invalid click reason: {}", nm.reason);
 							return 0;
