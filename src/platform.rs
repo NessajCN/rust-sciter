@@ -80,7 +80,7 @@ mod windows {
 		/// Create a new native window.
 		fn create(&mut self, rc: RECT, flags: UINT, parent: HWINDOW) -> HWINDOW {
 
-			if (flags & SCITER_CREATE_WINDOW_FLAGS::SW_MAIN as u32) != 0 {
+			if (flags & SCITER_CREATE_WINDOW_FLAGS::SW_MAIN.0 as u32) != 0 {
 				OsWindow::init_app();
 			}
 

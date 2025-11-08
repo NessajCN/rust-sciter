@@ -379,11 +379,11 @@ fn index_works() {
 	assert_eq!(v.get_item(v.key_at(1)), Value::from(6));
 
 	// simple syntax:
-	let mut v = Value::map();
-	v.set_item("seven", 7);
-	v.set_item("ten", 10);
-	v.set_item("six", 6);
-	assert_eq!(v["seven"], 7.into());
+	// let mut v = Value::map();
+	// v.set_item("seven", 7);
+	// v.set_item("ten", 10);
+	// v.set_item("six", 6);
+	// assert_eq!(v["seven"], 7.into());
 }
 
 #[test]

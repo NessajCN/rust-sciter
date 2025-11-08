@@ -107,7 +107,7 @@ impl Window {
 		}
 
 		let mut base = OsWindow::new();
-		let hwnd = base.create(rect, flags as UINT, parent.unwrap_or(0 as HWINDOW));
+		let hwnd = base.create(rect, flags.0 as UINT, parent.unwrap_or(0 as HWINDOW));
 		assert!(!hwnd.is_null());
 
 		let wnd = Window { base: base, host: Rc::new(Host::attach(hwnd))};
@@ -539,12 +539,12 @@ impl Builder {
 	}
 
 	fn or(mut self, flag: Flags) -> Self {
-		self.flags = self.flags | flag;
+		self.flags = SCITER_CREATE_WINDOW_FLAGS(self.flags.0 | flag.0);
 		self
 	}
 
 	fn and(mut self, flag: Flags) -> Self {
-		let masked = self.flags as u32 & !(flag as u32);
+		let masked = self.flags.0 as u32 & !(flag.0 as u32);
 		self.flags = unsafe { ::std::mem::transmute(masked) };
 		self
 	}
